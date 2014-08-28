@@ -19,7 +19,12 @@ class HMDCLogger:
         * https://docs.python.org/2/library/logging.html
 
     Example:
-        See https://wiki.hmdc.harvard.edu/docuwiki/Software/HMDCLogger.
+        # Create logger object at DEBUG level.
+        hmdclog = HMDCLogger('MyLogger', 'DEBUG')
+        # Enable logging to console.
+        hmdclog.log_to_console()
+        # Enable logging to file.
+        hmdclog.log_to_file('/path/to/file', 'logFile.txt')
 
     Class Variables:
         DEF_LOG_FORMAT (string): The default display format of the logs.
