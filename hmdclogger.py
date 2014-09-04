@@ -121,9 +121,9 @@ class HMDCLogger:
         ch.setFormatter(self.log_format)
         self.logger.addHandler(ch)
 
-    def log_to_file(self, log_path, log_filename):
+    def log_to_file(self, log_file):
         """Adds a file handler to the logger."""
-        fh = logging.FileHandler(log_path + "/" + log_filename)
+        fh = logging.FileHandler(log_file)
         fh.setLevel(self.debug_level)
         fh.setFormatter(self.log_format)
         self.logger.addHandler(fh)
