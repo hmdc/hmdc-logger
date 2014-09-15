@@ -108,7 +108,7 @@ class HMDCLogger:
 
             source = filename + "." + function
             # Message is right-justified in a 30 character column.
-            log = '{:>30}'.format(source) + ': ' + message
+            log = '{:>35}'.format(source) + ': ' + message
             self.logger.log(level, log)
         else:
             raise Exception("Could not identify logging type for message \"" +
