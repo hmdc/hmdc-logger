@@ -1,4 +1,4 @@
-#!/usr/bin/env python27
+#!/usr/bin/env python
 
 __author__ = "Harvard-MIT Data Center DevOps"
 __copyright__ = "Copyright 2014, HMDC"
@@ -11,6 +11,7 @@ __status__ = "Production"
 import inspect
 import logging
 import os
+import sys
 
 
 class HMDCLogger:
@@ -55,10 +56,10 @@ class HMDCLogger:
             date_format (string): Format of the log timestamp.
 
         Attributes:
+            debug_num (int): The logging level in numeric format.
+            debug_str (string): The logging level in name format.
             logger (Logger): Instance of Logger class.
         """
-
-        self.logger = logging.getLogger(name)
 
         if log_format is None:
             log_format = self.DEF_LOG_FORMAT
@@ -66,13 +67,23 @@ class HMDCLogger:
         if date_format is None:
             date_format = self.DEF_DATE_FORMAT
 
+        self.logger = logging.getLogger(name)
         self.log_format = logging.Formatter(log_format, date_format)
-        self.debug_level = debug_level
-        self.logger.setLevel(self.debug_level)
 
-    def get_level(self):
+        # Python 2.6 requires the numeric value, not a string.
+        self.debug_str = debug_level.upper()
+        self.debug_num = logging.getLevelName(self.debug_str)
+        if type(self.debug_num) is not int:
+            raise TypeError("Debugging level was not recognized.")
+        else:
+            self.logger.setLevel(self.debug_num)
+
+    def get_level(self, as_int=False):
         """Returns the debugging level of the logger."""
-        return self.debug_level
+        if as_int:
+            return self.debug_num
+        else:
+            return self.debug_str
 
     def log(self, level, message):
         """Handles the actual logging of messages.
@@ -91,12 +102,12 @@ class HMDCLogger:
 
         level = logging.getLevelName(level.upper())
 
-        if type(level) is int:
+        if type(level) is not int:
+            raise TypeError("Could not identify logging type for message \"" +
+                            message + "\"")
+        else:
             # The calling function is saved in the Python stack.
             function = inspect.stack()[1][3]
-
-            # TODO: If function is type <module> it's a script and
-            # not a function.
 
             #
             # The filename needs to be cleaned up by removing the leading path
@@ -107,24 +118,21 @@ class HMDCLogger:
             filename = os.path.splitext(filename)[0]
 
             source = filename + "." + function
-            # Message is right-justified in a 30 character column.
+            # Message is right-justified in a 35 character column.
             log = '{:>35}'.format(source) + ': ' + message
             self.logger.log(level, log)
-        else:
-            raise Exception("Could not identify logging type for message \"" +
-                            message + "\"")
 
     def log_to_console(self):
         """Adds a console handler to the logger."""
-        ch = logging.StreamHandler()
-        ch.setLevel(self.debug_level)
+        ch = logging.StreamHandler(sys.stdout)
+        ch.setLevel(self.debug_num)
         ch.setFormatter(self.log_format)
         self.logger.addHandler(ch)
 
     def log_to_file(self, log_file):
         """Adds a file handler to the logger."""
         fh = logging.FileHandler(log_file)
-        fh.setLevel(self.debug_level)
+        fh.setLevel(self.debug_num)
         fh.setFormatter(self.log_format)
         self.logger.addHandler(fh)
 
