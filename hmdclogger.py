@@ -119,7 +119,7 @@ class HMDCLogger:
 
             source = filename + "." + function
             # Message is right-justified in a 35 character column.
-            log = '{:>35}'.format(source) + ': ' + message
+            log = "{0:>35}: {1}".format(source, message)
             self.logger.log(level, log)
 
     def log_to_console(self):
