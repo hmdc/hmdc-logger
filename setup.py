@@ -1,12 +1,12 @@
 from distutils.core import setup
 
-setup(name='HMDCLogger',
-      version='1.1',
-      author='Bradley Frank',
+setup(author='Bradley Frank',
       author_email='bfrank@hmdc.harvard.edu',
-      url='https://github.com/hmdc/hmdc-logger',
       description='Wrapper for the logging module.',
       license='GPLv2',
+      name='HMDCLogger',
       packages=['hmdclogger'],
-      requires=['inspect','logging','os','sys']
+      requires=['inspect','logging','os','sys'],
+      url='https://github.com/hmdc/hmdc-logger',
+      version='1.1',
 )
