@@ -2,7 +2,6 @@ from distutils.core import setup
 
 setup(author='Bradley Frank',
       author_email='bfrank@hmdc.harvard.edu',
-      build-temp='/tmp',
       description='Wrapper for the logging module.',
       license='GPLv2',
       name='HMDCLogger',
