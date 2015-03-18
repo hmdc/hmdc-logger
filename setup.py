@@ -8,5 +8,5 @@ setup(author='Bradley Frank',
       packages=['hmdclogger'],
       requires=['inspect','logging','os','sys'],
       url='https://github.com/hmdc/hmdc-logger',
-      version='1.1',
+      version='1.2',
 )
